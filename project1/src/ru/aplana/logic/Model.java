@@ -2,7 +2,9 @@ package ru.aplana.logic;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class Model implements Serializable {
 
@@ -26,6 +28,44 @@ public class Model implements Serializable {
 
     public void add(User user, int id) {
         model.put(id, user);
+    }
+
+    public User get(int id) {
+        User user = new User();
+        for (Map.Entry<Integer, User> entry : model.entrySet()) {
+            if (entry.getKey() == id) {
+                user = model.get(id);
+                break;
+            }
+        }
+
+        return user;
+    }
+
+    public void del(int id) {
+        Set<Map.Entry<Integer, User>> setOfEntries = model.entrySet();
+
+        Iterator<Map.Entry<Integer, User>> iterator = setOfEntries.iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, User> entry = iterator.next();
+            Integer key = entry.getKey();
+
+            if (key == id) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void put(int id, String name, String surname, double salary) {
+        for (Map.Entry<Integer, User> entry : model.entrySet()) {
+            if (entry.getKey() == id) {
+                entry.getValue().setName(name);
+                entry.getValue().setSurname(surname);
+                entry.getValue().setSalary(salary);
+                break;
+            }
+        }
     }
 
     public Map<Integer, User> getFromList() {

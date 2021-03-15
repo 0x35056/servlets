@@ -16,6 +16,14 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/*
+    {
+        "name" : "name",
+        "surname" : "surname",
+        "salary" : 123456
+    }
+*/
+
 @WebServlet(urlPatterns = "/add")
 public class ServletAdd extends HttpServlet {
 
@@ -68,10 +76,5 @@ public class ServletAdd extends HttpServlet {
 
         User user = new User(name, surname, salary);
         model.add(user, counter.getAndIncrement());
-
-        response.setContentType("application/json;charset=utf-8");
-        PrintWriter pw = response.getWriter();
-
-        pw.print(gson.toJson(model.getFromList()));
     }
 }

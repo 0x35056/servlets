@@ -2,6 +2,8 @@ package ru.aplana;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ru.aplana.logic.Model;
 import ru.aplana.logic.User;
 
@@ -12,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
+
+// {"id" : 0}
 
 @WebServlet(urlPatterns = "/list")
 public class ServletList extends HttpServlet {
@@ -67,6 +72,12 @@ public class ServletList extends HttpServlet {
 //        }
 //    }
 
+/*
+    {
+        "id" : 0
+    }
+*/
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         StringBuffer jb = new StringBuffer();
@@ -82,10 +93,10 @@ public class ServletList extends HttpServlet {
             System.out.println("Error");
         }
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        JsonObject jobj = gson.fromJson(String.valueOf(jb), JsonObject.class);
+        int id = jobj.get("id").getAsInt();
 
         response.setContentType("application/json;charset=utf-8");
-
         PrintWriter pw = response.getWriter();
 
         if (id == 0) {
@@ -100,14 +111,7 @@ public class ServletList extends HttpServlet {
 
             } else {
 
-                String name = model.getFromList().get(id).getName();
-                String surname = model.getFromList().get(id).getSurname();
-                double salary = Double.parseDouble(gson.toJson(model.getFromList().get(id).getSalary()));
-
-                User user = new User(name, surname, salary);
-                model.add(user, id);
-
-                pw.print(gson.toJson(model.getFromList().get(id)));
+                pw.print(gson.toJson(model.get(id)));
 
             }
         } else {

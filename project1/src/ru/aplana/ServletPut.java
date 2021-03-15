@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import ru.aplana.logic.Model;
-import ru.aplana.logic.User;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+// {"id" : 1, "name" : "Petr", "surname" : "Petrov", "salary" : 60000}
 
 @WebServlet(urlPatterns = "/put")
 public class ServletPut extends HttpServlet {
@@ -40,29 +41,28 @@ public class ServletPut extends HttpServlet {
 
         JsonObject jobj = gson.fromJson(String.valueOf(jb), JsonObject.class);
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = jobj.get("id").getAsInt();
         String name = jobj.get("name").getAsString();
         String surname = jobj.get("surname").getAsString();
         double salary = jobj.get("salary").getAsDouble();
 
         response.setContentType("application/json;charset=utf-8");
 
-        PrintWriter pw = response.getWriter();
+        model.put(id, name, surname, salary);
 
-        if (id > 0) {
+/*        if (id > 0) {
 
             if (id > model.getFromList().size()) {
 
                 pw.print("Такого пользователя не существует");
             } else {
 
-                User user = new User(name, surname, salary);
-                model.add(user, id);
+                model.put(id, name, surname, salary);
                 pw.print(gson.toJson(model.getFromList().get(id)));
             }
         } else {
 
             pw.print("ID должен быть больше нуля!");
-        }
+        }*/
     }
 }
