@@ -38,14 +38,11 @@ public class Servlet extends HttpServlet {
         System.out.println(jb);
 
         JsonObject jobj = gson.fromJson(String.valueOf(jb), JsonObject.class);
-        request.setCharacterEncoding("UTF-8");
 
         request.setCharacterEncoding("UTF-8");
 
         int a = jobj.get("a").getAsInt();
         int b = jobj.get("b").getAsInt();
-        float af = jobj.get("a").getAsFloat();
-        float bf = jobj.get("a").getAsFloat();
         String math = jobj.get("math").getAsString();
 
         response.setContentType("application/json;charset=utf-8");
