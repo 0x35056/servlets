@@ -23,7 +23,7 @@ public class Controller {
      */
 
     @ResponseBody
-    @PostMapping(value = "/createPet", consumes = "application/json", produces="application/text; charset=UTF-8")
+    @PostMapping(value = "/createPet", consumes = "application/json", produces = "application/text; charset=UTF-8")
     public String createPet(@RequestBody Pet pet) {
         String s = null;
 
@@ -54,17 +54,33 @@ public class Controller {
         return model.getFromList();
     }
 
+    /*
+        {
+            "id" : 3
+        }
+    */
+
     @DeleteMapping(value = "/deletePet", consumes = "application/json")
     public void deletePet(@RequestBody Map<String, Integer> id) {
         model.del(id.get("id"));
     }
 
-    @PutMapping(value = "/putPet", consumes = "application/json")
-    public void putPet(@RequestBody Map<Integer, Pet> map) {
-        for (Map.Entry<Integer, Pet> entry : map.entrySet()) {
-            int id = entry.getKey();
-            Pet pet = entry.getValue();
-            model.put(pet, id);
+    /*
+        {
+            "id" : 2,
+            "name" : "Felix",
+            "type" : "cat",
+            "age" : 3
         }
+     */
+
+    @PutMapping(value = "/putPet", consumes = "application/json")
+    public void putPet(@RequestBody Map<String, String> map) {
+            int id = Integer.parseInt(map.get("id"));
+            String name = map.get("name");
+            String type = map.get("type");
+            int age = Integer.parseInt(map.get("age"));
+
+            model.put(id, name, type, age);
     }
 }
